@@ -72,11 +72,11 @@ class Aggregator(ABC):
         self.n_test_clients = len(test_clients)
         self.n_learners = len(self.global_learners_ensemble)
 
-        self.cliens_weights = torch.tensor(
+        self.clients_weights = torch.tensor(
             [client.n_train_samples for client in self.clients],
             dtype=torch.float32
         )
-        self.cliens_weights = self.cliens_weights/self.cliens_weights.sum()
+        self.clients_weights = self.clients_weights/self.clients_weights.sum()
 
         self.sampling_rate = sampling_rate
         self.sample_with_replacement = sample_with_replacement
@@ -118,7 +118,7 @@ class Aggregator(ABC):
 
             total_n_samples = 0
             total_n_test_samples = 0
-
+            # local logs
             for client_id, client in enumerate(clients):
                 train_loss, train_acc, test_loss, test_acc = client.write_logs()
 
@@ -133,8 +133,8 @@ class Aggregator(ABC):
 
                 global_train_loss += train_loss * client.n_train_samples
                 global_train_acc += train_acc * client.n_train_samples
-                global_test_loss += test_loss * clients.n_test_samples
-                global_test_acc += test_acc * clients.n_test_samples
+                global_test_loss += test_loss * client.n_test_samples
+                global_test_acc += test_acc * client.n_test_samples
 
                 total_n_samples += client.n_train_samples
                 total_n_test_samples += client.n_test_samples
@@ -147,7 +147,7 @@ class Aggregator(ABC):
             if self.verbose > 0:
                 print("+"*30)
                 print("Global...")
-                print(f"Train Loss: {global_train_loss:.3f} | Train Acc: {global_train_acc * 100:.3f}% |", end="")
+                print(f"Train Loss: {global_train_loss:.3f} | Train Acc: {global_train_acc * 100:.3f}% | ", end="")
                 print(f"Test Loss: {global_test_loss:.3f} | Test Acc: {global_test_acc * 100:.3f}% |")
                 print("+" * 50)
 
@@ -175,7 +175,17 @@ class Aggregator(ABC):
     def sample_clients(self):
         """
         sample a list of clients without repetition
+
         """
+        if self.sample_with_replacement:
+            self.sampled_clients = \
+                self.rng.choices(
+                    population=self.clients,
+                    weights=self.clients_weights,
+                    k=self.n_clients_per_round,
+                )
+        else:
+            self.sampled_clients = self.rng.sample(self.clients, k=self.n_clients_per_round)
 
 class CentralizedAggregator(Aggregator):
     r""" Standard Centralized Aggregator.

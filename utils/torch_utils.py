@@ -63,7 +63,7 @@ def average_learners(learners,
 
 def copy_model(target, source):
     """
-    Copy learners_weights from target to source
+    Copy learners_weights from source to target
     :param target: nn.Module
     :param source: nn.Module
     :return:

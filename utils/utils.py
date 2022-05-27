@@ -55,7 +55,15 @@ def get_aggregator(aggregator_type,
     seed = (seed if (seed is not None and seed >=0) else int(time.time()))
 
     if aggregator_type == 'centralized':
-        return CentralizedAggregator()
+        return CentralizedAggregator(clients=clients,
+            global_learners_ensemble=global_learners_ensemble,
+            log_freq=log_freq,
+            global_train_logger=global_train_logger,
+            global_test_logger=global_test_logger,
+            test_clients=test_clients,
+            sampling_rate=sampling_rate,
+            verbose=verbose,
+            seed=seed)
     # elif aggregator_type == 'L2SGD':
     #     return LoopLessLocalSGDAggregator()
     # elif aggregator_type == 'decentralized':

@@ -1,5 +1,6 @@
 import os
-import tqdm
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+from tqdm import tqdm
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
@@ -17,7 +18,7 @@ def init_clients(args_, root_path, logs_dir):
     :param logs_dir: path to logs root
     :return: List[Client]
     """
-    print("===> Building data iterators...")
+    print("=======> Building data iterators...")
 
     train_iterators, val_iterators, test_iterators = get_loaders(
         type_=LOADER_TYPE[args_.dataset],
@@ -25,7 +26,7 @@ def init_clients(args_, root_path, logs_dir):
         batch_size=args_.bz,
         is_validation=args_.validation
     )
-    print("===> Initializing clients..")
+    print("=======> Initializing clients..")
     clients_ = []
     for task_id, (train_iterator, val_iterator, test_iterator) in \
             enumerate(tqdm(zip(train_iterators,val_iterators,test_iterators), total=len(train_iterators))):
@@ -55,6 +56,8 @@ def init_clients(args_, root_path, logs_dir):
                             logger=logger,
                             local_steps=args_.local_steps,
                             tune_locally=args_.locally_tune_clients)
+        clients_.append(client)
+    return clients_
 
 def run_experiment(args_):
     # set random seed to ensure the result can be repeated
