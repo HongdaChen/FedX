@@ -2,7 +2,8 @@ cd ../../
 
 # run FedAvg
 echo "Run FedAvg"
-c
+python run_experiment.py cifar10 FedAvg --n_learners 1 --n_rounds 200 --bz 64 --lr 0.01  --lr_scheduler multi_step --log_freq 10 --device cuda --optimizer sgd --seed 1234 --verbose 1
+
 # run FedAvg + local adaption
 echo "run FedAvg + local adaption"
 python run_experiment.py cifar10 FedAvg --n_learners 1 --locally_tune_clients --n_rounds 201 --bz 128 \
