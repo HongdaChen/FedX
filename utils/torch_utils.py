@@ -1,7 +1,9 @@
 import warnings
 
 import torch
-
+################################################################################################################
+########       This file is the key point to average all clients and send back to all clients        ###########
+################################################################################################################
 
 def average_learners(learners,
                      target_learner,

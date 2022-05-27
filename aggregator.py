@@ -193,11 +193,13 @@ class CentralizedAggregator(Aggregator):
     """
     def mix(self):
         self.sample_clients()
-
+        # all clients go forward to train
         for client in self.sampled_clients:
             client.step()
+        # average all clients to global
         for learner_id, learner in enumerate(self.global_learners_ensemble):
             learners = [client.learners_ensemble[learner_id] for client in self.clients]
+            # update model.state_dict ==> Compute the average of a list of learners_ensemble and store it into learner
             average_learners(learners, learner, weights=self.clients_weights)
 
         # assign the updated model to all clients
@@ -207,11 +209,13 @@ class CentralizedAggregator(Aggregator):
         if self.c_round % self.log_freq == 0:
             self.write_logs()
 
+    # assign the updated model to all clients
     def update_clients(self):
         for client in self.clients:
             for learner_id, learner in enumerate(client.learners_ensemble):
+                # assign model.state_dict to all clients
                 copy_model(learner.model, self.global_learners_ensemble[learner_id].model)
-
+                # assign model.parameters to all clients
                 if callable(getattr(learner.optimizer,"set_initial_params",None)):
                     learner.optimizer.set_initial_params(
                         self.global_learners_ensemble[learner_id].model.parameters()
