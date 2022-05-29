@@ -50,7 +50,7 @@ def parse_args():
 def train_test_split(raw_text, frac):
     r"""
     splits role text data into a set of training lines (the first `frac` of lines for the role),
-     and train lines (the last 1 - `frac`, rounded up to at least one line)
+     and test lines (the last 1 - `frac`, rounded up to at least one line)
     :param raw_text: raw text data
     :type raw_text: str
     :param frac: training fraction
@@ -84,7 +84,7 @@ def save_task(dir_path, train_text, test_text, val_text=None):
     with open(os.path.join(dir_path, "train.txt"), 'w') as f:
         f.write(train_text)
 
-    with open(os.path.join(dir_path, "train.txt"), 'w') as f:
+    with open(os.path.join(dir_path, "test.txt"), 'w') as f:
         f.write(test_text)
 
     if val_text is not None:
@@ -106,13 +106,13 @@ def main():
     rng.shuffle(file_names_list)
 
     os.makedirs(os.path.join(TARGET_PATH, "train"), exist_ok=True)
-    os.makedirs(os.path.join(TARGET_PATH, "train"), exist_ok=True)
+    os.makedirs(os.path.join(TARGET_PATH, "test"), exist_ok=True)
 
     for idx, file_name in enumerate(file_names_list):
         if idx < int(args.train_tasks_frac * n_tasks):
             mode = "train"
         else:
-            mode = "train"
+            mode = "test"
 
         text_path = os.path.join(RAW_DATA_PATH, file_name)
 

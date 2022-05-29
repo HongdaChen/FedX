@@ -30,9 +30,11 @@ def init_clients(args_, root_path, logs_dir):
     clients_ = []
     for task_id, (train_iterator, val_iterator, test_iterator) in \
             enumerate(tqdm(zip(train_iterators,val_iterators,test_iterators), total=len(train_iterators))):
+
         if train_iterator is None or test_iterator is None:
             continue
-        learners_ensemble = get_learners_ensemble(n_learners=args_.n_learners,
+        learners_ensemble = get_learners_ensemble(
+                n_learners=args_.n_learners,
                 name=args_.dataset,
                 device=args_.device,
                 optimizer_name=args_.optimizer,
@@ -155,3 +157,4 @@ if __name__ == "__main__":
 
     args = parse_args()
     run_experiment(args)
+

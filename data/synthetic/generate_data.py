@@ -139,7 +139,7 @@ def parse_args():
     )
     parser.add_argument(
         '--n_test',
-        help='size of train set;',
+        help='size of test set;',
         type=int,
         default=5_000
     )
@@ -192,13 +192,13 @@ def main():
     dataset.save_metadata(os.path.join(PATH, "meta.pkl"))
 
     os.makedirs(os.path.join(PATH, "train"), exist_ok=True)
-    os.makedirs(os.path.join(PATH, "train"), exist_ok=True)
+    os.makedirs(os.path.join(PATH, "test"), exist_ok=True)
 
     for task_id in range(dataset.n_tasks):
         if task_id < int(args.train_tasks_frac*args.n_tasks):
             mode = "train"
         else:
-            mode = "train"
+            mode = "test"
 
         client_path = os.path.join(PATH, mode, "task_{}".format(task_id))
         os.makedirs(client_path, exist_ok=True)
@@ -207,7 +207,7 @@ def main():
         x_test, y_test = dataset.generate_data(task_id, args.n_test)
 
         save_data(x_train, y_train, os.path.join(client_path, "train.pkl"))
-        save_data(x_test, y_test, os.path.join(client_path, "train.pkl"))
+        save_data(x_test, y_test, os.path.join(client_path, "test.pkl"))
 
 
 if __name__ == '__main__':

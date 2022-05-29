@@ -201,7 +201,7 @@ def get_cifar100():
         cifar100_data, cifar100_targets
     """
     cifar100_path = os.path.join("data", "cifar100", "raw_data")
-    assert os.path.isdir(cifar100_path), "Download cifar10 dataset!!"
+    assert os.path.isdir(cifar100_path), "Download cifar100 dataset!!"
 
     cifar100_train =\
         CIFAR100(

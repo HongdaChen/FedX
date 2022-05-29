@@ -149,9 +149,9 @@ def main():
         train_clients_indices, test_clients_indices = clients_indices, []
 
     os.makedirs(os.path.join(PATH, "train"), exist_ok=True)
-    os.makedirs(os.path.join(PATH, "train"), exist_ok=True)
+    os.makedirs(os.path.join(PATH, "test"), exist_ok=True)
 
-    for mode, clients_indices in [('train', train_clients_indices), ('train', test_clients_indices)]:
+    for mode, clients_indices in [('train', train_clients_indices), ('test', test_clients_indices)]:
         for client_id, indices in enumerate(clients_indices):
             client_path = os.path.join(PATH, mode, "task_{}".format(client_id))
             os.makedirs(client_path, exist_ok=True)
@@ -174,7 +174,7 @@ def main():
                 save_data(val_indices, os.path.join(client_path, "val.pkl"))
 
             save_data(train_indices, os.path.join(client_path, "train.pkl"))
-            save_data(test_indices, os.path.join(client_path, "train.pkl"))
+            save_data(test_indices, os.path.join(client_path, "test.pkl"))
 
 
 if __name__ == "__main__":

@@ -44,11 +44,14 @@ In order to generate the data split for Table 2 (Full client participation) with
 validation set, run
 
 ```
-python generate_data.py  --n_tasks 80  --n_components 3 --alpha 0.4 --s_frac 1.0 --tr_frac 0.8  --seed 12345    
+python generate_data.py \
+    --n_tasks 80 \
+    --n_components 3 \
+    --alpha 0.4 \
+    --s_frac 1.0 \
+    --tr_frac 0.8 \
+    --seed 12345    
 ```
-
-
-
 
 In order to include the validation set, run
 
@@ -69,7 +72,14 @@ In order to generate the data split for Table 3 (Unseen clients) without
 validation set, run
 
 ```
-python generate_data.py --n_tasks 80 --n_components 3    --alpha 0.4  --s_frac 1.0  --tr_frac 0.8  --test_tasks_frac 0.2 --seed 12345
+python generate_data.py \
+    --n_tasks 80 \
+    --n_components 3 \
+    --alpha 0.4 \
+    --s_frac 1.0 \
+    --tr_frac 0.8 \
+    --test_tasks_frac 0.2 \
+    --seed 12345
 ```
 
 In order to include the validation set, run

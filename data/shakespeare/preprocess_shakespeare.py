@@ -142,7 +142,7 @@ def play_and_character(play, character):
 
 def _get_train_test_by_character(plays, test_fraction=0.2):
     """
-      Splits character data into train and train sets.
+      Splits character data into train and test sets.
       if test_fraction <= 0, returns {} for all_test_examples
       plays := list of (play, dict) tuples where play is a string and dict
       is a dictionary with character names as keys
@@ -167,7 +167,7 @@ def _get_train_test_by_character(plays, test_fraction=0.2):
             if len(examples) <= 2:
                 skipped_characters += 1
                 # Skip characters with fewer than 2 lines since we need at least one
-                # train and one train line.
+                # train and one test line.
                 continue
             train_examples = examples
             if test_fraction > 0:

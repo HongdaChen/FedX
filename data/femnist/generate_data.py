@@ -57,7 +57,7 @@ def save_task(dir_path, train_data, train_targets, test_data, test_targets, val_
     r"""
     save (`train_data`, `train_targets`) in {dir_path}/train.pt,
     (`val_data`, `val_targets`) in {dir_path}/val.pt
-    and (`test_data`, `test_targets`) in {dir_path}/train.pt
+    and (`test_data`, `test_targets`) in {dir_path}/test.pt
 
     :param dir_path:
     :param train_data:
@@ -68,7 +68,7 @@ def save_task(dir_path, train_data, train_targets, test_data, test_targets, val_
     :param val_targets
     """
     torch.save((train_data, train_targets), os.path.join(dir_path, "train.pt"))
-    torch.save((test_data, test_targets), os.path.join(dir_path, "train.pt"))
+    torch.save((test_data, test_targets), os.path.join(dir_path, "test.pt"))
 
     if (val_data is not None) and (val_targets is not None):
         torch.save((val_data, val_targets), os.path.join(dir_path, "val.pt"))
@@ -88,14 +88,14 @@ def main():
     rng.shuffle(file_names_list)
 
     os.makedirs(os.path.join(TARGET_PATH, "train"), exist_ok=True)
-    os.makedirs(os.path.join(TARGET_PATH, "train"), exist_ok=True)
+    os.makedirs(os.path.join(TARGET_PATH, "test"), exist_ok=True)
 
     print("generating data..")
     for idx, file_name in enumerate(tqdm(file_names_list)):
         if idx < int(args.train_tasks_frac * n_tasks):
             mode = "train"
         else:
-            mode = "train"
+            mode = "test"
 
         data, targets = torch.load(os.path.join(RAW_DATA_PATH, file_name))
         train_data, test_data, train_targets, test_targets =\

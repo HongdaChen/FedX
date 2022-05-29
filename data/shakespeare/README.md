@@ -28,7 +28,10 @@ In order to generate the data split for Table 2 (Full client participation) with
 validation set, run
 
 ```
-python generate_data.py --s_frac 1.0 --tr_frac 0.8 --seed 12345    
+python generate_data.py \
+    --s_frac 1.0 \
+    --tr_frac 0.8 \
+    --seed 12345    
 ```
 
 In order to include the validation set, run
